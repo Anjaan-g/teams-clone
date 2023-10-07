@@ -27,15 +27,15 @@ export const Chat = () => {
     const [replyingTo, setReplyingTo] = useState<number | null>(null);
     const [creatingThread, setCreatingThread] = useState(false);
 
-    const handleNewChatSubmit = ({ newChat }: { newChat: string }) => {
-        const newChatMessage: Chat = {
-            id: Math.floor(Math.random() * 1000),
-            text: newChat,
-            replies: [],
-        };
-        setChats([...chats, newChatMessage]);
-        reset();
-    };
+    // const handleNewChatSubmit = ({ newChat }: { newChat: string }) => {
+    //     const newChatMessage: Chat = {
+    //         id: Math.floor(Math.random() * 1000),
+    //         text: newChat,
+    //         replies: [],
+    //     };
+    //     setChats([...chats, newChatMessage]);
+    //     reset();
+    // };
 
     const handleReply = (chatId: number) => {
         setReplyingTo(chatId);
@@ -62,10 +62,10 @@ export const Chat = () => {
             reset();
         }
     };
-    const gptReply = (chatId: number) => {
-        handleReply(chatId)
-        handleReplySubmit("This is an auto response")
-    }
+    const gptReply = (chatId: number, reply: string) => {
+        handleReply(chatId);
+        handleReplySubmit("Your question is:" + reply);
+    };
 
     const handleCreateThread = () => {
         setCreatingThread(true);
@@ -83,13 +83,13 @@ export const Chat = () => {
             replies: [],
         };
         setChats([...chats, newThreadMessage]);
-        gptReply(newThreadId)
+        // gptReply(newThreadMessage.id, newThreadmessage.text);
         reset();
         setCreatingThread(false);
     };
 
     return (
-        <div className="chat flex flex-col justify-between items-center w-full">
+        <div className="chat flex flex-col justify-between items-start w-full">
             <div className="message-content flex flex-col justify-between items-start px-10 w-full">
                 {chats.map(chat => (
                     <>
@@ -104,7 +104,7 @@ export const Chat = () => {
                                     className="w-full mb-4"
                                 >
                                     <div className="flex w-full bg-day border-2 border-l-primary h-14 text-center justify-start px-2 items-center text-base">
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col justify-start items-start">
                                             <p>You:</p>
                                             <p>{chat.text}</p>
                                         </div>
@@ -166,39 +166,39 @@ export const Chat = () => {
                         </div>
                     </>
                 ))}
-                <div className="create-thread-Button bottom-0 my-4 flex">
-                    {!creatingThread && (
-                        <Button
-                            onClick={handleCreateThread}
-                            className="flex justify-start gap-1.5 text-white"
-                        >
-                            <FiEdit size={20} /> Create New Thread
+            </div>
+            <div className="create-thread-Button bottom-0 my-4 flex mx-4">
+                {!creatingThread && (
+                    <Button
+                        onClick={handleCreateThread}
+                        className="flex justify-start gap-1.5 text-white"
+                    >
+                        <FiEdit size={20} /> Create New Thread
+                    </Button>
+                )}
+                {creatingThread && (
+                    <form
+                        onSubmit={handleSubmit(handleCreateThreadSubmit)}
+                        className="flex justify-start items-center gap-1.5"
+                    >
+                        <Controller
+                            name="threadText"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                                <input
+                                    type="text"
+                                    {...field}
+                                    className="new-thread-input"
+                                    placeholder="Type a new message"
+                                />
+                            )}
+                        />
+                        <Button type="submit">
+                            <AiOutlineSend size={20} /> Send
                         </Button>
-                    )}
-                    {creatingThread && (
-                        <form
-                            onSubmit={handleSubmit(handleCreateThreadSubmit)}
-                            className="flex justify-start items-center gap-1.5"
-                        >
-                            <Controller
-                                name="threadText"
-                                control={control}
-                                defaultValue=""
-                                render={({ field }) => (
-                                    <input
-                                        type="text"
-                                        {...field}
-                                        className="new-thread-input"
-                                        placeholder="Type a new message"
-                                    />
-                                )}
-                            />
-                            <Button type="submit">
-                                <AiOutlineSend size={20} /> Send
-                            </Button>
-                        </form>
-                    )}
-                </div>
+                    </form>
+                )}
             </div>
         </div>
     );
