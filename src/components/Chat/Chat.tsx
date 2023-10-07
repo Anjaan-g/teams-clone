@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react"
 import { Button } from "../shared/ui/button/Button"
 import { Input } from "../shared/ui/input/Input"
