@@ -15,7 +15,7 @@ export const Chat = () => {
 
     const {register, handleSubmit, reset} = useForm()
 
-    const onSubmit = (data) => {
+    const onSubmit = (data:any) => {
         console.log(data)
         if (!data) {
             return
