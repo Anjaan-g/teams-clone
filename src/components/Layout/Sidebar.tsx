@@ -1,10 +1,10 @@
 import {BsCameraVideo, BsFilter} from "react-icons/bs"
 import {FiEdit,FiUser} from "react-icons/fi"
-import { Button } from "../shared/ui/button/Button"
+// import { Button } from "../shared/ui/button/Button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../shared/ui/accordion/Accordion"
 export const Sidebar = () => {
   return (
-    <aside className="sidebar flex flex-col justify-between w-3/12 min-w-[300px] p-2 bg-secondary border  shadow-gray-400  drop-shadow-lg">
+    <aside className="sidebar flex flex-col justify-start w-3/12 min-w-[300px] p-2 bg-secondary border  shadow-gray-400  drop-shadow-lg">
         <div className="flex flex-col">
           <div className="flex justify-between items-center h-full">
               <h3 className="text-xl font-bold">Chat</h3>
@@ -29,11 +29,11 @@ export const Sidebar = () => {
             </AccordionItem>
           </Accordion>
         </div>
-        <div className="flex h-full w-full justify-center items-end">
+        {/* <div className="flex h-full w-full justify-center items-end">
           <Button className="w-full">
             Create new Chat
           </Button>
-        </div>
+        </div> */}
     </aside>
   )
 }
