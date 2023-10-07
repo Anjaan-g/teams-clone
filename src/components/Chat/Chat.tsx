@@ -59,9 +59,13 @@ export const Chat = () => {
             );
             setChats(updatedChats);
             setReplyingTo(null);
-            reset()
+            reset();
         }
     };
+    const gptReply = (chatId: number) => {
+        handleReply(chatId)
+        handleReplySubmit("This is an auto response")
+    }
 
     const handleCreateThread = () => {
         setCreatingThread(true);
@@ -79,6 +83,7 @@ export const Chat = () => {
             replies: [],
         };
         setChats([...chats, newThreadMessage]);
+        gptReply(newThreadId)
         reset();
         setCreatingThread(false);
     };
@@ -114,7 +119,7 @@ export const Chat = () => {
                                             </div>
                                         ))}
                                         {replyingTo === chat.id && (
-                                            <div className=" w-full flex justify-start">
+                                            <div className=" w-full flex justify-start mt-1">
                                                 <form
                                                     onSubmit={handleSubmit(
                                                         handleReplySubmit,
@@ -129,17 +134,20 @@ export const Chat = () => {
                                                             <input
                                                                 type="text"
                                                                 {...field}
-                                                                className="reply-input"
+                                                                className="reply-input h-9 w-full ps-2"
                                                                 placeholder="Type your reply"
                                                             />
                                                         )}
                                                     />
                                                     <Button
-                                                        variant="ghost"
+                                                        variant="default"
+                                                        size="icon"
                                                         type="submit"
                                                         className="reply-Button bg-none "
                                                     >
-                                                        <AiOutlineSend size={20}/>   Reply
+                                                        <AiOutlineSend
+                                                            size={20}
+                                                        />
                                                     </Button>
                                                 </form>
                                             </div>
@@ -150,15 +158,15 @@ export const Chat = () => {
                                         onClick={() => handleReply(chat.id)}
                                         className="text-black"
                                     >
-                                        <MdReply size={20}/>
-                                      Reply
+                                        <MdReply size={20} />
+                                        Reply
                                     </Button>
                                 </Card>
                             </div>
                         </div>
                     </>
                 ))}
-                <div className="create-thread-Button bottom-0 my-4 flex justify-start ">
+                <div className="create-thread-Button bottom-0 my-4 flex">
                     {!creatingThread && (
                         <Button
                             onClick={handleCreateThread}
@@ -185,7 +193,9 @@ export const Chat = () => {
                                     />
                                 )}
                             />
-                            <Button type="submit"><AiOutlineSend size={20}/> Send</Button>
+                            <Button type="submit">
+                                <AiOutlineSend size={20} /> Send
+                            </Button>
                         </form>
                     )}
                 </div>
