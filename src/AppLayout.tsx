@@ -1,7 +1,7 @@
-import { Navigation } from "./components/Layout/Navigation"
-import { Sidebar } from "./components/Layout/Sidebar"
+import { Navigation } from "./components/Layout/Navigation";
+import { Sidebar } from "./components/Layout/Sidebar";
 
-export const AppLayout = ({children}: {children: React.ReactNode}) => {
+export const AppLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
             <Navigation />
@@ -10,5 +10,5 @@ export const AppLayout = ({children}: {children: React.ReactNode}) => {
                 {children}
             </div>
         </>
-    )
-}
+    );
+};
