@@ -47,7 +47,7 @@ export const Chat = () => {
 
     const chatBox = useRef(null)
     
-    useEffect(() => chatBox.current.scrollIntoView(false), [messages])
+    // useEffect(() => chatBox.current.scrollIntoView(false), [messages])
 
   return (
     <div className="chat flex flex-col justify-between items-center bg-secondary">
