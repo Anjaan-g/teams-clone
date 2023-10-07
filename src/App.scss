@@ -1,0 +1,29 @@
+@import "./global.scss";
+
+.main-content {
+    padding-top: 4rem;
+    height: 100vh;
+}
+
+.sidebar {
+    position: fixed;
+    height: calc(100dvh - 64px);
+    bottom: 0;
+}
+
+.chat {
+    height: calc(100dvh - 64px);
+    bottom: 0;
+    background: $gray;
+    // margin-top: 64px;
+}
+
+.appcontent {
+    margin-left: max(25%, 300px);
+    width: 100%;
+}
+
+.message-content {
+    overflow-y: scroll;
+    white-space: nowrap;
+}
