@@ -6,6 +6,7 @@ import { Label } from "../shared/ui/label/Label";
 import { AiOutlineSend } from "react-icons/ai";
 import { useForm, Controller } from "react-hook-form";
 import { FiUser, FiEdit } from "react-icons/fi";
+import { MdReply } from "react-icons/md";
 import { Card, CardContent } from "../shared/ui/card/Card";
 import classNames from "classnames";
 
@@ -58,6 +59,7 @@ export const Chat = () => {
             );
             setChats(updatedChats);
             setReplyingTo(null);
+            reset()
         }
     };
 
@@ -117,6 +119,7 @@ export const Chat = () => {
                                                     onSubmit={handleSubmit(
                                                         handleReplySubmit,
                                                     )}
+                                                    className="flex items-center justify-start w-full"
                                                 >
                                                     <Controller
                                                         name="replyText"
@@ -134,18 +137,21 @@ export const Chat = () => {
                                                     <Button
                                                         variant="ghost"
                                                         type="submit"
-                                                        className="reply-Button bg-none"
+                                                        className="reply-Button bg-none "
                                                     >
-                                                        Reply
+                                                        <AiOutlineSend size={20}/>   Reply
                                                     </Button>
                                                 </form>
                                             </div>
                                         )}
                                     </CardContent>
                                     <Button
+                                        variant="link"
                                         onClick={() => handleReply(chat.id)}
+                                        className="text-black"
                                     >
-                                        Reply
+                                        <MdReply size={20}/>
+                                      Reply
                                     </Button>
                                 </Card>
                             </div>
@@ -158,14 +164,13 @@ export const Chat = () => {
                             onClick={handleCreateThread}
                             className="flex justify-start gap-1.5 text-white"
                         >
-                            {" "}
                             <FiEdit size={20} /> Create New Thread
                         </Button>
                     )}
                     {creatingThread && (
                         <form
                             onSubmit={handleSubmit(handleCreateThreadSubmit)}
-                            className="flex justify-start gap-1.5"
+                            className="flex justify-start items-center gap-1.5"
                         >
                             <Controller
                                 name="threadText"
@@ -180,7 +185,7 @@ export const Chat = () => {
                                     />
                                 )}
                             />
-                            <Button type="submit">Send</Button>
+                            <Button type="submit"><AiOutlineSend size={20}/> Send</Button>
                         </form>
                     )}
                 </div>
