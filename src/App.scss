@@ -1,26 +1,27 @@
 @import "./global.scss";
 
-.main-content {
-    padding-top: 4rem;
-    height: 100vh;
-}
+// .main-content {
+//     padding-top: 4rem;
+//     height: 100vh;
+// }
 
-.sidebar {
-    position: fixed;
-    height: calc(100dvh - 64px);
-    bottom: 0;
-}
+// .sidebar {
+//     position: fixed;
+//     height: calc(100dvh - 64px);
+//     bottom: 0;
+// }
 
-.chat {
-    height: calc(100dvh - 64px);
-    bottom: 0;
-    background: $gray;
-    // margin-top: 64px;
-}
+// .chat {
+//     height: calc(100dvh - 64px);
+//     bottom: 0;
+//     background: $gray;
+//     // margin-top: 64px;
+// }
 
 .appcontent {
-    margin-left: max(25%, 300px);
-    width: 100%;
+    // margin-left: max(25%, 300px);
+    width: 80%;
+    margin: auto;
 }
 
 .message-content {
@@ -28,14 +29,7 @@
     white-space: nowrap;
 }
 
-.card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px 0;
-    width: 60%;
-    margin-left: auto;
-    position: relative;
-}
+
 
 .reply-container {
     margin-top: 10px;
@@ -54,11 +48,11 @@
 }
 .create-thread-button {
     margin-top: 20px;
-}
 
-.create-thread-button button {
-    padding: 10px;
-    font-size: 16px;
+    .create-thread-button button {
+        padding: 10px;
+        font-size: 16px;
+    }
 }
 
 .new-thread-input {
@@ -69,4 +63,8 @@
 .new-thread-input button {
     padding: 10px;
     font-size: 16px;
+}
+
+.chat {
+    
 }

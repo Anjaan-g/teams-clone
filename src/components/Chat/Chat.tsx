@@ -9,6 +9,7 @@ import { FiUser, FiEdit } from "react-icons/fi";
 import { MdReply } from "react-icons/md";
 import { Card, CardContent } from "../shared/ui/card/Card";
 import classNames from "classnames";
+import React from "react";
 
 interface Chat {
     id: number;
@@ -26,45 +27,59 @@ export const Chat = () => {
     const { control, handleSubmit, reset } = useForm();
     const [replyingTo, setReplyingTo] = useState<number | null>(null);
     const [creatingThread, setCreatingThread] = useState(false);
-
-    // const handleNewChatSubmit = ({ newChat }: { newChat: string }) => {
-    //     const newChatMessage: Chat = {
-    //         id: Math.floor(Math.random() * 1000),
-    //         text: newChat,
-    //         replies: [],
-    //     };
-    //     setChats([...chats, newChatMessage]);
-    //     reset();
-    // };
+    const [replyText, setReplyText] = useState<string>("");
 
     const handleReply = (chatId: number) => {
-        setReplyingTo(chatId);
+        setReplyingTo(prevReplyingTo =>
+            prevReplyingTo === chatId ? null : chatId,
+        );
     };
 
-    const handleReplySubmit = ({ replyText }: { replyText: string }) => {
-        if (replyingTo !== null) {
-            const updatedChats = chats.map(chat =>
-                chat.id === replyingTo
-                    ? {
-                          ...chat,
-                          replies: [
-                              ...chat.replies,
-                              {
-                                  id: Math.floor(Math.random() * 1000),
-                                  text: replyText,
-                              },
-                          ],
-                      }
-                    : chat,
-            );
-            setChats(updatedChats);
-            setReplyingTo(null);
-            reset();
-        }
+    const gptReply = (chatText: string) => {
+        return `AI: Thank you for your message: "${chatText}". This is an automated reply from the AI.`;
     };
-    const gptReply = (chatId: number, reply: string) => {
-        handleReply(chatId);
-        handleReplySubmit("Your question is:" + reply);
+
+    const handleReplySubmit = () => {
+        if (replyText.trim() !== "") {
+            if (replyingTo !== null) {
+                const updatedChats = chats.map(chat =>
+                    chat.id === replyingTo
+                        ? {
+                              ...chat,
+                              replies: [
+                                  ...chat.replies,
+                                  {
+                                      id: Math.floor(Math.random() * 1000),
+                                      text: replyText,
+                                  },
+                              ],
+                          }
+                        : chat,
+                );
+                setChats(updatedChats);
+                setReplyText("");
+                setReplyingTo(null);
+
+                // Simulate GPT Reply
+                const aiReply = gptReply(replyText);
+                const updatedChatsWithAIReply = updatedChats.map(chat =>
+                    chat.id === replyingTo
+                        ? {
+                              ...chat,
+                              replies: [
+                                  ...chat.replies,
+                                  {
+                                      id: Math.floor(Math.random() * 1000),
+                                      text: aiReply,
+                                  },
+                              ],
+                          }
+                        : chat,
+                );
+                setChats(updatedChatsWithAIReply);
+                reset();
+            }
+        }
     };
 
     const handleCreateThread = () => {
@@ -80,17 +95,23 @@ export const Chat = () => {
         const newThreadMessage: Chat = {
             id: newThreadId,
             text: threadText,
-            replies: [],
+            replies: [
+                {
+                    id: newThreadId + 1,
+                    text: gptReply(threadText)
+                }
+            ],
         };
         setChats([...chats, newThreadMessage]);
-        // gptReply(newThreadMessage.id, newThreadmessage.text);
-        reset();
-        setCreatingThread(false);
+        setReplyText("");
+        setReplyingTo(null);
+        reset()
+
     };
 
     return (
         <div className="chat flex flex-col justify-between items-start w-full">
-            <div className="message-content flex flex-col justify-between items-start px-10 w-full">
+            <div className="message-content flex flex-col justify-between items-start px-10 w-full min-h-full">
                 {chats.map(chat => (
                     <>
                         <div className="flex justify-between items-center w-full mt-5">
@@ -121,9 +142,10 @@ export const Chat = () => {
                                         {replyingTo === chat.id && (
                                             <div className=" w-full flex justify-start mt-1">
                                                 <form
-                                                    onSubmit={handleSubmit(
-                                                        handleReplySubmit,
-                                                    )}
+                                                    onSubmit={e => {
+                                                        e.preventDefault();
+                                                        handleReplySubmit();
+                                                    }}
                                                     className="flex items-center justify-start w-full"
                                                 >
                                                     <Controller
@@ -135,7 +157,16 @@ export const Chat = () => {
                                                                 type="text"
                                                                 {...field}
                                                                 className="reply-input h-9 w-full ps-2"
+                                                                value={
+                                                                    replyText
+                                                                }
                                                                 placeholder="Type your reply"
+                                                                onChange={e =>
+                                                                    setReplyText(
+                                                                        e.target
+                                                                            .value,
+                                                                    )
+                                                                }
                                                             />
                                                         )}
                                                     />
@@ -144,6 +175,7 @@ export const Chat = () => {
                                                         size="icon"
                                                         type="submit"
                                                         className="reply-Button bg-none "
+                                                        // onClick={handleReplySubmit}
                                                     >
                                                         <AiOutlineSend
                                                             size={20}
@@ -167,7 +199,7 @@ export const Chat = () => {
                     </>
                 ))}
             </div>
-            <div className="create-thread-Button bottom-0 my-4 flex mx-4">
+            <div className="create-thread-Button fixed bottom-2 my-4 flex mx-4 w-full h-12">
                 {!creatingThread && (
                     <Button
                         onClick={handleCreateThread}
@@ -179,7 +211,7 @@ export const Chat = () => {
                 {creatingThread && (
                     <form
                         onSubmit={handleSubmit(handleCreateThreadSubmit)}
-                        className="flex justify-start items-center gap-1.5"
+                        className="flex justify-start items-center gap-1.5 w-4/5 mr-10"
                     >
                         <Controller
                             name="threadText"
@@ -189,7 +221,7 @@ export const Chat = () => {
                                 <input
                                     type="text"
                                     {...field}
-                                    className="new-thread-input"
+                                    className="new-thread-input w-full h-10 ps-2"
                                     placeholder="Type a new message"
                                 />
                             )}
