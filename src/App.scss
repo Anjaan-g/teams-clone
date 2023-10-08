@@ -22,11 +22,13 @@
     // margin-left: max(25%, 300px);
     width: 80%;
     margin: auto;
+    // height: 100vh;
 }
 
 .message-content {
     overflow-y: scroll;
     white-space: nowrap;
+    height: calc(100vh - 100px);
 }
 
 
@@ -65,6 +67,6 @@
     font-size: 16px;
 }
 
-.chat {
-    
-}
+// .chat {
+
+// }

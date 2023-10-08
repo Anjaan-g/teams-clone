@@ -111,7 +111,7 @@ export const Chat = () => {
 
     return (
         <div className="chat flex flex-col justify-between items-start w-full">
-            <div className="message-content flex flex-col justify-between items-start px-10 w-full min-h-full">
+            <div className="message-content flex flex-col justify-between items-start px-10 w-full min-h-full overflow-y-scroll ">
                 {chats.map(chat => (
                     <>
                         <div className="flex justify-between items-center w-full mt-5">
@@ -122,7 +122,7 @@ export const Chat = () => {
 
                                 <Card
                                     key={chat.id}
-                                    className="w-full mb-4"
+                                    className="w-full mb-4 overflow-y-scroll max-h-[500px]"
                                 >
                                     <div className="flex w-full bg-day border-2 border-l-primary h-14 text-center justify-start px-2 items-center text-base">
                                         <div className="flex flex-col justify-start items-start">
